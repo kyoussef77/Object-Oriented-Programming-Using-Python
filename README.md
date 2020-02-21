@@ -11,36 +11,111 @@ So, the object manages its own state via methods — and no other class can touc
 If you want to communicate with the object, you should use the methods provided. 
 But (by default), you can’t change the state.
 
-
-    class Computer:
     
+    # ENCAPSULATION
+    class  Multiplication:
+        @staticmethod
+        def product(multiplier,multiplicand=None):
+            if (isinstance(multiplier,list)):
+                return Multiplication.productList(multiplier)
+            return multiplier * multiplicand
+    
+        @staticmethod
+        def productList (valueList):
+            result = 1
+            for element in valueList:
+                result = Multiplication.product(result, element)
+            return result
+
+   
+   
+##Abstraction
+Abstraction can be thought of as a natural extension of encapsulation.
+In object-oriented design, programs are often extremely large. And separate objects communicate with each other a lot.
+ So maintaining a large codebase like this for years — with changes along the way — is difficult.
+Applying abstraction means that each object should only expose a high-level mechanism for using it.
+
+This mechanism should hide internal implementation details. It should only reveal operations relevant for the other objects.
+
+
+
+    # ABSTRACTION
+    
+    from MathOperations.Addition import Addition;
+    from MathOperations.Multiplication import Multiplication;
+    
+    class Calculator:
+        Result = 0
+        
         def __init__(self):
-            self.__maxprice = 900
+            pass
+        def Sum(self, a, b):
+            self.Result = Addition.sum(a, b)
+            return self.Result
     
-        def sell(self):
-            print("Selling Price: {}".format(self.__maxprice))
-    
-        def setMaxPrice(self, price):
-            self.__maxprice = price
-    
-    c = Computer()
-    c.sell()
-    
-    # change the price
-    c.__maxprice = 1000
-    c.sell()
-    
-    # using setter function
-    c.setMaxPrice(1000)
-    c.sell()
+        def Product(self, a, b):
+            self.Result = Multiplication.product(a, b)
+            return self.Result
 
+## Inheritance
+Inheritance is the process by which one class takes on the attributes and methods of another.
+ Newly formed classes are called child classes, and the classes that child classes are derived from are
+  called parent classes.
 
-When we run this program, the output will be:
+It’s important to note that child classes override or extend the functionality (e.g., attributes and behaviors)
+of parent classes. In other words, child classes inherit all of the parent’s attributes and behaviors but can 
+also specify different behavior to follow. The most basic type of class is an object, which generally all other
+classes inherit as their parent.
 
-    Selling Price: 900
-    Selling Price: 900
-    Selling Price: 1000
+    # INHERITANCE
+    from Calculator.calculator import Calculator
+    from MathOperations.mean import Mean
     
- In the above program, we defined a class Computer. We use __init__() method to store the maximum selling price of computer.
-  We tried to modify the price. However, we can’t change it because Python treats the __maxprice as private attributes.
-   To change the value, we used a setter function i.e setMaxPrice() which takes price as parameter.
+    class Statistics(Calculator):
+
+    def mean(self, data):
+        self.Result = Mean(data)
+        return self.Result
+
+## Polymorphism
+Polymorphism is an ability (in OOP) to use common interface for multiple form (data types).
+ Polymorphism means having the same interface/attributes in different
+classes.
+
+ Polymorphism is the characteristic of being able to assign
+a different meaning or usage in different contexts.
+ A not-so-clear/clean example is, different classes can have
+ the same function name.
+ 
+    class Parrot:
+    
+        def fly(self):
+            print("Parrot can fly")
+        
+        def swim(self):
+            print("Parrot can't swim")
+    
+    class Penguin:
+    
+        def fly(self):
+            print("Penguin can't fly")
+        
+        def swim(self):
+            print("Penguin can swim")
+    
+    # common interface
+    def flying_test(bird):
+        bird.fly()
+    
+    #instantiate objects
+    blu = Parrot()
+    peggy = Penguin()
+    
+    # passing the object
+    flying_test(blu)
+    flying_test(peggy)
+    
+ In the above program, we defined two classes Parrot and Penguin. 
+ach of them have common method fly() method. However, their functions are different.
+To allow polymorphism, we created common interface i.e flying_test() function that can take any object.
+Then, we passed the objects blu and peggy in the flying_test() function, it ran effectively.
